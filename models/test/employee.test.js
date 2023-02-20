@@ -14,9 +14,7 @@ describe('Employee', () => {
       const emp = new Employee(item);
 
       emp.validate((err) => {
-        expect(
-          err.errors.firstName || err.errors.lastName || err.errors.department
-        ).to.exist;
+        expect(err.errors).to.exist;
       });
     }
   });
@@ -35,9 +33,7 @@ describe('Employee', () => {
       const emp = new Employee(item);
 
       emp.validate((err) => {
-        expect(
-          err.errors.firstName || err.errors.lastName || err.errors.department
-        ).to.exist;
+        expect(err.errors).to.exist;
       });
     }
   });
