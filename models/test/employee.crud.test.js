@@ -215,7 +215,7 @@ describe('Employee', () => {
 
     it('should refere to the department collection', async () => {
       const populatedEmployee = await Employee.find().populate('department');
-      expect(populatedEmployee[0].department.name).to.not.equal(null);
+      expect(populatedEmployee[0].department.name).to.equal('Department #1');
     });
 
     after(async () => {
