@@ -8,8 +8,8 @@ chai.use(chaiHttp);
 const expect = chai.expect;
 const request = chai.request;
 
-describe('PUT /api/departments', () => {
-  before(async () => {
+describe('DELETE /api/departments', () => {
+  beforeEach(async () => {
     const testDepOne = new Department({
       _id: '5d9f1140f10a81216cfd4408',
       name: 'Department #1',
@@ -17,7 +17,7 @@ describe('PUT /api/departments', () => {
     await testDepOne.save();
   });
 
-  after(async () => {
+  afterEach(async () => {
     await Department.deleteMany();
   });
 
@@ -33,5 +33,23 @@ describe('PUT /api/departments', () => {
     expect(res.status).to.be.equal(200);
     expect(res.body.message).to.be.equal('OK');
     expect(deletedDepartment).to.be.null;
+  });
+
+  it('/wrong :id should return status 404 and message "Not found..."', async () => {
+    const res = await request(server).delete(
+      '/api/departments/6d9f1140f10a81216cfd4409'
+    );
+
+    expect(res.status).to.be.equal(404);
+    expect(res.body.message).to.be.equal('Not found...');
+  });
+
+  it('/it should cause an error and return status 500 when invalid :id is provided', async () => {
+    const res = await request(server).delete('/api/departments/invalid');
+
+    expect(res.status).to.be.equal(500);
+    expect(res.body.message).to.not.be.equal('Not found...');
+    expect(res.body.message).to.not.be.equal('OK');
+    expect(res.body.message).to.not.be.null;
   });
 });
